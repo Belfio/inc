@@ -1,11 +1,17 @@
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::pubkey::Pubkey;
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("DByFdRqrHS8bPoDCUnQCfY6iAQDeE5BF4UFAYWp25hLW");
 
 #[program]
 pub mod inc_factory {
     use super::*;
+
+    pub fn initialize_registry(ctx: Context<InitializeRegistry>) -> Result<()> {
+        let registry = &mut ctx.accounts.company_registry;
+        registry.companies = Vec::new();
+        Ok(())
+    }
 
     pub fn create_company(
         ctx: Context<CreateCompany>,
@@ -17,11 +23,16 @@ pub mod inc_factory {
         vote_amounts: Vec<u64>,
     ) -> Result<()> {
         // Ensure the company name is unique
-        if ctx.accounts.company_registry.companies.iter().any(|&company| {
-            // You might need to implement a way to compare company names
-            // This is a placeholder comparison
-            company == ctx.accounts.new_company.key()
-        }) {
+        if ctx
+            .accounts
+            .company_registry
+            .companies
+            .iter()
+            .any(|&company| {
+                // You might need to implement a way to compare company names
+                // This is a placeholder comparison
+                company == ctx.accounts.new_company.key()
+            }) {
             return Err(IncFactoryError::NameAlreadyTaken.into());
         }
 
@@ -40,10 +51,16 @@ pub mod inc_factory {
         new_company.vote_amounts = vote_amounts;
 
         // Add the new company to the registry
-        ctx.accounts.company_registry.companies.push(new_company.key());
+        ctx.accounts
+            .company_registry
+            .companies
+            .push(new_company.key());
 
         // Initialize associated Token and Treasury accounts
         // This part would require additional implementation and possibly separate instructions
+
+        // Log the signer of the transaction
+        msg!("Transaction signed by: {}", ctx.accounts.user.key());
 
         Ok(())
     }
@@ -52,7 +69,7 @@ pub mod inc_factory {
         Ok(ctx.accounts.company_registry.companies.clone())
     }
 
-    pub fn get_company_by_name(ctx: Context<GetCompanyByName>, name: String) -> Result<Pubkey> {
+    pub fn get_company_by_name(ctx: Context<GetCompanyByName>) -> Result<Pubkey> {
         ctx.accounts
             .company_registry
             .companies
@@ -61,8 +78,7 @@ pub mod inc_factory {
                 // You might need to implement a way to compare company names
                 // This is a placeholder comparison
                 company == ctx.accounts.company_account.key()
-            })
-            .copied()
+            }).copied()
             .ok_or(IncFactoryError::CompanyNotFound.into())
     }
 }
@@ -71,7 +87,7 @@ pub mod inc_factory {
 pub struct CreateCompany<'info> {
     #[account(mut)]
     pub company_registry: Account<'info, CompanyRegistry>,
-    #[account(init, payer = user, space = 8 + 32 + 50 + 50 + 32 * 50 + 8 * 50 + 32 * 50 + 8 * 50)]
+    #[account(init, payer = user, space = 8 + 32 + 50 + 50 + 32 * 50 + 8 * 50 + 32 * 50 + 8 * 50, seeds = [b"company", user.key().as_ref()], bump)]
     pub new_company: Account<'info, Company>,
     #[account(mut)]
     pub user: Signer<'info>,
@@ -88,6 +104,16 @@ pub struct GetCompanyByName<'info> {
     pub company_registry: Account<'info, CompanyRegistry>,
     pub company_account: Account<'info, Company>,
 }
+
+#[derive(Accounts)]
+pub struct InitializeRegistry<'info> {
+    #[account(init, payer = user, space = 8 + 32 * 100)] // Adjust space as needed
+    pub company_registry: Account<'info, CompanyRegistry>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
 
 #[account]
 pub struct CompanyRegistry {

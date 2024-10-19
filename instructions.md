@@ -51,19 +51,29 @@ Creates and manages new INC instances.
 
 #### Instructions
 
-1. `create_company(name: String, jurisdiction: String, shareholders: Vec<Pubkey>, share_amounts: Vec<u64>, voters: Vec<Pubkey>, vote_amounts: Vec<u64>) -> ProgramResult`
+1. `create_company(name: String, jurisdiction: String, shareholders: Vec<Pubkey>, share_amounts: Vec<u64>, voters: Vec<Pubkey>, vote_amounts: Vec<u64>) -> Result<()>`
 
-   - Creates a new INC instance
-   - Ensures unique company name
-   - Initializes associated Token and Treasury accounts
-   - Returns the address of the new INC account
+   ```rust
+   #[program]
+   pub mod inc_factory {
+       use super::*;
 
-2. `get_company_list() -> Vec<Pubkey>`
+       pub fn create_company(ctx: Context<CreateCompany>, name: String, jurisdiction: String, shareholders: Vec<Pubkey>, share_amounts: Vec<u64>, voters: Vec<Pubkey>, vote_amounts: Vec<u64>) -> Result<()> {
+           // Implementation here
+           Ok(())
+       }
 
-   - Returns a list of all created INC addresses
+       pub fn get_company_list(ctx: Context<GetCompanyList>) -> Result<()> {
+           // Implementation here
+           Ok(())
+       }
 
-3. `get_company_by_name(name: String) -> Pubkey`
-   - Returns the address of an INC by its name
+       pub fn get_company_by_name(ctx: Context<GetCompanyByName>, name: String) -> Result<()> {
+           // Implementation here
+           Ok(())
+       }
+   }
+   ```
 
 #### Errors
 
@@ -261,7 +271,6 @@ Example Project Structure:
 - Implement program upgrades using Solana's upgradeable BPF loader
 - Explore integration with other Solana programs (e.g., Serum DEX for token trading)
 - Develop a Rust-based client SDK for easy integration
-- Create a user-friendly web interface using Solana web3.js
 - Implement more advanced treasury management features, such as multi-asset support or yield-generating strategies
 
 <!-- ## 7. Docs -->

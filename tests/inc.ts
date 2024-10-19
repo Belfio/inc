@@ -4,8 +4,10 @@ import { Inc } from "../target/types/inc";
 
 describe("inc", () => {
   // Configure the client to use the local cluster.
-  anchor.setProvider(anchor.AnchorProvider.env());
+  console.log("Tesitng inc");
 
+  anchor.setProvider(anchor.AnchorProvider.env());
+  // console.log("provider", anchor.AnchorProvider.env());
   const program = anchor.workspace.Inc as Program<Inc>;
 
   it("Is initialized!", async () => {

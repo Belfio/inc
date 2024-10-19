@@ -895,8 +895,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "inc-factory"
+name = "inc_factory"
 version = "0.1.0"
+dependencies = [
+ "anchor-lang",
+]
 
 [[package]]
 name = "indexmap"
