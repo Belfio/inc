@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::pubkey::Pubkey;
 
-declare_id!("DByFdRqrHS8bPoDCUnQCfY6iAQDeE5BF4UFAYWp25hLW");
+declare_id!("7kmLroKer2JooHLqQi8ugBRHhVVTudxUm1JsAa9gpyhK");
 
 #[program]
 pub mod inc_factory {
