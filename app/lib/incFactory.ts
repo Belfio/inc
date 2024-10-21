@@ -22,27 +22,29 @@ const COMPANY_REGISTRY_ID = new PublicKey(
   "HmtYcFcnXBHCSHVxEyMGsZq4YNAFahzHQJfGwSkE43C9"
 );
 const airdropSol = async (wallet: anchor.Wallet) => {
-  // const signature = await provider.connection.requestAirdrop(
-  //   wallet.publicKey,
-  //   anchor.web3.LAMPORTS_PER_SOL
-  // );
-  // await provider.connection.confirmTransaction(signature);
+  const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+  console.log("connection for airdrop", connection);
+  const provider = new anchor.AnchorProvider(connection, wallet, {
+    preflightCommitment: "confirmed",
+  });
+  const signature = await provider.connection.requestAirdrop(
+    wallet.publicKey,
+    anchor.web3.LAMPORTS_PER_SOL
+  );
+  await provider.connection.confirmTransaction(signature);
 };
 
 // Define a function to initialize the provider manually
 const init = async (wallet: anchor.Wallet) => {
   const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
-  console.log("connection", connection);
-  // Manually create the AnchorProvider
+  console.log("connection for init", connection);
+
   const provider = new anchor.AnchorProvider(connection, wallet, {
     preflightCommitment: "confirmed",
   });
 
   anchor.setProvider(provider);
-  console.log("idl", idl);
-  console.log("PROGRAM_ID", PROGRAM_ID.toBase58());
   const program = new Program(idl, provider);
-  console.log("Program instantiated:", program.programId.toBase58());
 
   // *********************************************************************************
   // *********************************************************************************
@@ -100,12 +102,7 @@ const init = async (wallet: anchor.Wallet) => {
   };
 };
 
-const createCompany = async ({
-  wallet,
-}: {
-  companyRegistryPublicKey: PublicKey;
-  wallet: anchor.Wallet;
-}) => {
+const createCompany = async ({ wallet }: { wallet: anchor.Wallet }) => {
   const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
   const provider = new anchor.AnchorProvider(connection, wallet, {
     preflightCommitment: "confirmed",
@@ -117,13 +114,13 @@ const createCompany = async ({
     user: ${user.publicKey}
     provider: ${provider.wallet.publicKey}
     program: ${program.programId}
+    companyRegistry: ${COMPANY_REGISTRY_ID}
     `);
-  console.log("companyRegistryPublicKey", COMPANY_REGISTRY_ID);
-  const [newCompanyPda, bump] = anchor.web3.PublicKey.findProgramAddressSync(
+
+  const [newCompanyPda] = anchor.web3.PublicKey.findProgramAddressSync(
     [Buffer.from("company"), provider.wallet.publicKey.toBuffer()],
     program.programId
   );
-  console.log("newCompanyPda", newCompanyPda);
   try {
     console.log(`
       companyRegistry: ${COMPANY_REGISTRY_ID}
@@ -161,7 +158,7 @@ const createCompany = async ({
 
 const getCompanyList = async ({ wallet }: { wallet: anchor.Wallet }) => {
   const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
-  console.log("connection", connection);
+  console.log("connection for getCompanyList", connection);
   const provider = new anchor.AnchorProvider(connection, wallet, {
     preflightCommitment: "confirmed",
   });
@@ -180,6 +177,7 @@ const getCompanyDetails = async ({
   companyPda: PublicKey;
 }) => {
   const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+  console.log("connection for getCompanyDetails", connection);
   const provider = new anchor.AnchorProvider(connection, wallet, {
     preflightCommitment: "confirmed",
   });

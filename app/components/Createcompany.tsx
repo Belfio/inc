@@ -1,6 +1,6 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import incFactory from "../lib/incFactory";
-import { Keypair, PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 
 const CreateCompany = () => {
   const { wallet, connected } = useWallet();
