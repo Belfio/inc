@@ -8,7 +8,7 @@ import {
   // Transaction,
   SystemProgram,
 } from "@solana/web3.js";
-import { Program } from "@coral-xyz/anchor";
+import { Program, Wallet } from "@coral-xyz/anchor";
 import { IncFactory } from "../../target/types/inc_factory"; // Adjust the path as needed
 import idl from "../../target/idl/inc_factory.json"; // Adjust the path as needed
 
@@ -17,6 +17,9 @@ import idl from "../../target/idl/inc_factory.json"; // Adjust the path as neede
 
 const PROGRAM_ID = new PublicKey(
   "7kmLroKer2JooHLqQi8ugBRHhVVTudxUm1JsAa9gpyhK"
+);
+const COMPANY_REGISTRY_ID = new PublicKey(
+  "HmtYcFcnXBHCSHVxEyMGsZq4YNAFahzHQJfGwSkE43C9"
 );
 const airdropSol = async (wallet: anchor.Wallet) => {
   // const signature = await provider.connection.requestAirdrop(
@@ -36,11 +39,31 @@ const init = async (wallet: anchor.Wallet) => {
   });
 
   anchor.setProvider(provider);
-  // const program = anchor.workspace.IncFactory as Program<IncFactory>;
   console.log("idl", idl);
   console.log("PROGRAM_ID", PROGRAM_ID.toBase58());
   const program = new Program(idl, provider);
   console.log("Program instantiated:", program.programId.toBase58());
+
+  // *********************************************************************************
+  // *********************************************************************************
+  // *********************************************************************************
+  // check if an my wallet address has already created an account of type companyRegistry exists
+  const [companyRegistryPda, bump] =
+    anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("companyRegistry"), provider.wallet.publicKey.toBuffer()],
+      program.programId
+    );
+  // if exists, return the account
+  const companyRegistryAccount = await provider.connection.getAccountInfo(
+    companyRegistryPda
+  );
+  if (companyRegistryAccount) {
+    console.log("Company registry account already exists");
+    return { companyRegistry: companyRegistryAccount };
+  }
+  // *********************************************************************************
+  // *********************************************************************************
+  // *********************************************************************************
 
   const companyRegistry = new Keypair();
   // Generate a new Keypair for the company registry
@@ -73,26 +96,42 @@ const init = async (wallet: anchor.Wallet) => {
     provider,
     program,
     companyRegistry,
-    user: provider.wallet,
+    user: wallet,
   };
 };
 
 const createCompany = async ({
-  companyRegistry,
-  user,
-  provider,
-  program,
+  wallet,
 }: {
-  companyRegistry: Keypair;
-  user: anchor.Wallet;
-  provider: anchor.AnchorProvider;
-  program: Program<IncFactory>;
+  companyRegistryPublicKey: PublicKey;
+  wallet: anchor.Wallet;
 }) => {
+  const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+  const provider = new anchor.AnchorProvider(connection, wallet, {
+    preflightCommitment: "confirmed",
+  });
+  const program = new Program(idl, provider);
+  const user = wallet;
+  console.log(`createCompany
+    companyRegistryPublicKey: ${COMPANY_REGISTRY_ID}
+    user: ${user.publicKey}
+    provider: ${provider.wallet.publicKey}
+    program: ${program.programId}
+    `);
+  console.log("companyRegistryPublicKey", COMPANY_REGISTRY_ID);
   const [newCompanyPda, bump] = anchor.web3.PublicKey.findProgramAddressSync(
     [Buffer.from("company"), provider.wallet.publicKey.toBuffer()],
     program.programId
   );
+  console.log("newCompanyPda", newCompanyPda);
   try {
+    console.log(`
+      companyRegistry: ${COMPANY_REGISTRY_ID}
+      newCompany: ${newCompanyPda}
+      user: ${user.publicKey}
+      systemProgram: ${anchor.web3.SystemProgram.programId}
+      signers: ${user.publicKey}
+      `);
     await program.methods
       .createCompany(
         "Test Company",
@@ -103,12 +142,12 @@ const createCompany = async ({
         [] // vote_amounts
       )
       .accounts({
-        companyRegistry: companyRegistry.publicKey,
+        companyRegistry: COMPANY_REGISTRY_ID,
         newCompany: newCompanyPda,
         user: user.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
       })
-      .signers([user.payer])
+      .signers([])
       .rpc();
     console.log("new company created with no errors");
   } catch (error) {
@@ -116,25 +155,43 @@ const createCompany = async ({
   }
   // Fetch the new company account to verify creation
   const companyAccount = await program.account.company.fetch(newCompanyPda);
-
+  console.log("companyAccount", companyAccount);
   return { companyAccount, companyPDA: newCompanyPda };
 };
 
-const getCompanyList = async ({
-  program,
-  companyRegistry,
-}: {
-  program: Program<IncFactory>;
-  companyRegistry: Keypair;
-}) => {
+const getCompanyList = async ({ wallet }: { wallet: anchor.Wallet }) => {
+  const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+  console.log("connection", connection);
+  const provider = new anchor.AnchorProvider(connection, wallet, {
+    preflightCommitment: "confirmed",
+  });
+  const program = new Program(idl, provider);
   const companyList = await program.account.companyRegistry.fetch(
-    companyRegistry.publicKey
+    COMPANY_REGISTRY_ID
   );
   return companyList.companies;
+};
+
+const getCompanyDetails = async ({
+  wallet,
+  companyPda,
+}: {
+  wallet: anchor.Wallet;
+  companyPda: PublicKey;
+}) => {
+  const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+  const provider = new anchor.AnchorProvider(connection, wallet, {
+    preflightCommitment: "confirmed",
+  });
+  const program = new Program(idl, provider);
+  const companyDetails = await program.account.company.fetch(companyPda);
+  return companyDetails;
 };
 
 export default {
   createCompany,
   init,
   airdropSol,
+  getCompanyList,
+  getCompanyDetails,
 };

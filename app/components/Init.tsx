@@ -12,16 +12,12 @@ const Init = () => {
           try {
             const { provider, program, companyRegistry, user } =
               await incFactory.init(wallet.adapter as any);
-            // Continue with your logic, e.g., creating a company
-            const { companyAccount, companyPDA } =
-              await incFactory.createCompany({
-                companyRegistry,
-                user,
-                provider,
-                program,
-              });
-            console.log("Company Account:", companyAccount);
-            console.log("Company PDA:", companyPDA.toBase58());
+            console.log(`
+              provider: ${provider.wallet.publicKey}
+              program: ${program.programId}
+              companyRegistry: ${companyRegistry.publicKey}
+              user: ${user.publicKey}
+            `);
           } catch (error) {
             console.error("Initialization error:", error);
           }

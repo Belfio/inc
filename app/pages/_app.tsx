@@ -3,6 +3,8 @@ import {
   WalletDisconnectButton,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
+import CreateCompany from "~/components/Createcompany";
+import GetCompanyList from "~/components/GetCompanyList";
 import Init from "~/components/Init";
 
 const Wallet = () => {
@@ -23,6 +25,8 @@ const Wallet = () => {
         <WalletDisconnectButton />
         {/* Your app's components go here, nested within the context providers. */}
         <Init />
+        <CreateCompany />
+        <GetCompanyList />
       </div>
     </>
   );
