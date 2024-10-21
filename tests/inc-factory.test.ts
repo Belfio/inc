@@ -11,20 +11,14 @@ describe("inc-factory", async () => {
 
   const program = anchor.workspace.IncFactory as Program<IncFactory>;
 
-  const registryKey = "HjUHUnGvhBPMgxgrPmzfNyWySKQGPpAYqfFx5LEoAvmc";
-
   // Generate a new Keypair for the company registry
-  const companyRegistry = new PublicKey(registryKey);
+  const companyRegistry = new Keypair();
 
   // Generate a new Keypair to act as a non-owner
   const nonOwner = Keypair.generate();
 
   const user = new PublicKey("GgCoc1ZebjKJ1Dgojg5kEASR9voUvcP7tmD1KTaQPw8B");
-  // Derive PDA for a new company
-  const [newCompanyPda, bump] = anchor.web3.PublicKey.findProgramAddressSync(
-    [Buffer.from("company"), provider.wallet.publicKey.toBuffer()],
-    program.programId
-  );
+
   // Utility function to airdrop SOL to a Keypair
   const airdropSol = async (wallet: Keypair) => {
     const signature = await provider.connection.requestAirdrop(
@@ -40,7 +34,6 @@ describe("inc-factory", async () => {
   });
 
   it("Initializes the company registry", async () => {
-    return;
     await program.methods
       .initializeRegistry()
       .accounts({
@@ -62,24 +55,33 @@ describe("inc-factory", async () => {
   });
 
   it("Allows the owner to create a new company", async () => {
-    await program.methods
-      .createCompany(
-        "Test Company",
-        "Test Jurisdiction",
-        [], // shareholders
-        [], // share_amounts
-        [], // voters
-        [] // vote_amounts
-      )
-      .accounts({
-        companyRegistry: registryKey,
-        newCompany: newCompanyPda,
-        user: provider.wallet.publicKey,
-        systemProgram: anchor.web3.SystemProgram.programId,
-      })
-      .signers([provider.wallet])
-      .rpc();
-
+    // Derive PDA for a new company
+    const [newCompanyPda, bump] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("company"), provider.wallet.publicKey.toBuffer()],
+      program.programId
+    );
+    try {
+      await program.methods
+        .createCompany(
+          "Test Company",
+          "Test Jurisdiction",
+          [], // shareholders
+          [], // share_amounts
+          [], // voters
+          [] // vote_amounts
+        )
+        .accounts({
+          companyRegistry: companyRegistry.publicKey,
+          newCompany: newCompanyPda,
+          user: provider.wallet.publicKey,
+          systemProgram: anchor.web3.SystemProgram.programId,
+        })
+        .signers([provider.wallet.payer])
+        .rpc();
+      console.log("new company created with no errors");
+    } catch (error) {
+      console.log("error creating new company", error);
+    }
     // Fetch the new company account to verify creation
     const companyAccount = await program.account.company.fetch(newCompanyPda);
     expect(companyAccount.name).to.equal("Test Company");
