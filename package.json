@@ -1,28 +1,63 @@
 {
-  "license": "ISC",
-  "scripts": {
-    "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
-    "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check",
-    "test": "anchor test --skip-local-validator",
-    "validator": "solana-test-validator -r"
-  },
-  "dependencies": {
-    "@coral-xyz/anchor": "^0.30.1"
-  },
-  "devDependencies": {
-    "@types/bn.js": "^5.1.0",
-    "@types/chai": "^4.3.0",
-    "@types/mocha": "^9.0.0",
-    "chai": "^4.3.4",
-    "mocha": "^9.0.3",
-    "prettier": "^2.6.2",
-    "solana-bankrun": "^0.3.1",
-    "ts-mocha": "^10.0.0",
-    "typescript": "^4.3.5"
-  },
   "name": "inc",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/Belfio/inc.git",
-  "author": "albelfio <5812464+Belfio@users.noreply.github.com>"
+  "author": "albelfio <5812464+Belfio@users.noreply.github.com>",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "build": "remix vite:build",
+    "dev": "remix vite:dev",
+    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "preview": "vite preview",
+    "typecheck": "tsc",
+    "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
+    "test": "anchor test --skip-local-validator",
+    "validator": "solana-test-validator -r"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.30.1",
+    "@remix-run/node": "^2.13.1",
+    "@remix-run/react": "^2.13.1",
+    "@solana/wallet-adapter-base": "^0.9.23",
+    "@solana/wallet-adapter-react": "^0.15.35",
+    "@solana/wallet-adapter-react-ui": "^0.9.35",
+    "@solana/wallet-adapter-wallets": "^0.19.32",
+    "@solana/web3.js": "^1.95.4",
+    "isbot": "^4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "^2.13.1",
+    "@types/bn.js": "^5.1.0",
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.0.0",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "autoprefixer": "^10.4.19",
+    "chai": "^4.3.4",
+    "eslint": "^8.38.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "mocha": "^9.0.3",
+    "postcss": "^8.4.38",
+    "prettier": "^2.6.2",
+    "solana-bankrun": "^0.3.1",
+    "tailwindcss": "^3.4.4",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^5.1.6",
+    "vite": "^5.1.0",
+    "vite-tsconfig-paths": "^4.2.1"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
 }
