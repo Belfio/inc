@@ -1,13 +1,24 @@
 import * as anchor from "@coral-xyz/anchor";
 
-import { Keypair, Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
+import {
+  Keypair,
+  Connection,
+  clusterApiUrl,
+  PublicKey,
+  // Transaction,
+  SystemProgram,
+} from "@solana/web3.js";
 import { Program } from "@coral-xyz/anchor";
-import type { IncFactory } from "../../target/types/inc_factory"; // Adjust the path as needed
+import { IncFactory } from "../../target/types/inc_factory"; // Adjust the path as needed
+import idl from "../../target/idl/inc_factory.json"; // Adjust the path as needed
 
 // import { Keypair, PublicKey } from "@solana/web3.js";
 // const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
 
-const airdropSol = async (wallet: Keypair) => {
+const PROGRAM_ID = new PublicKey(
+  "7kmLroKer2JooHLqQi8ugBRHhVVTudxUm1JsAa9gpyhK"
+);
+const airdropSol = async (wallet: anchor.Wallet) => {
   // const signature = await provider.connection.requestAirdrop(
   //   wallet.publicKey,
   //   anchor.web3.LAMPORTS_PER_SOL
@@ -18,34 +29,38 @@ const airdropSol = async (wallet: Keypair) => {
 // Define a function to initialize the provider manually
 const init = async (wallet: anchor.Wallet) => {
   const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
-
+  console.log("connection", connection);
   // Manually create the AnchorProvider
   const provider = new anchor.AnchorProvider(connection, wallet, {
     preflightCommitment: "confirmed",
   });
 
   anchor.setProvider(provider);
-  const program = anchor.workspace.IncFactory as Program<IncFactory>;
-  console.log("program", program);
+  // const program = anchor.workspace.IncFactory as Program<IncFactory>;
+  console.log("idl", idl);
+  console.log("PROGRAM_ID", PROGRAM_ID.toBase58());
+  const program = new Program(idl, provider);
+  console.log("Program instantiated:", program.programId.toBase58());
 
-  // Generate a new Keypair for the company registry
   const companyRegistry = new Keypair();
+  // Generate a new Keypair for the company registry
 
   console.log(`
-    Company registry: ${companyRegistry.publicKey}
-    user: ${provider.wallet.publicKey}
-    systemProgram: ${anchor.web3.SystemProgram.programId}
-  `);
+   Company registry: ${companyRegistry.publicKey}
+   user: ${wallet.publicKey}
+   systemProgram: ${SystemProgram.programId}
+ `);
 
   await program.methods
     .initializeRegistry()
     .accounts({
       companyRegistry: companyRegistry.publicKey,
-      user: provider.wallet.publicKey,
-      systemProgram: anchor.web3.SystemProgram.programId,
+      user: wallet.publicKey,
+      systemProgram: SystemProgram.programId,
     })
     .signers([companyRegistry])
     .rpc();
+  console.log("Registry initialized");
 
   // Fetch the company registry account to verify initialization
   const registryAccount = await program.account.companyRegistry.fetch(

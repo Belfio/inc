@@ -1,16 +1,40 @@
-import type { MetaFunction } from "@remix-run/node";
+import { useMemo } from "react";
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from "@solana/wallet-adapter-react";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import {
+  PhantomWalletAdapter,
+  // Add other wallets if needed
+} from "@solana/wallet-adapter-wallets";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import Wallet from "~/pages/_app";
-export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
-};
+import { clusterApiUrl } from "@solana/web3.js";
 
-// Start of Selection
-// Default styles that can be overridden by your app
-import "@solana/wallet-adapter-react-ui/styles.css";
+function App() {
+  const network = WalletAdapterNetwork.Devnet;
+  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
-export default function Index() {
-  return <Wallet />;
+  const wallets = useMemo(
+    () => [
+      //       new UnsafeBurnerWalletAdapter(),
+
+      new PhantomWalletAdapter(),
+      // Add other wallets here
+    ],
+    []
+  );
+
+  return (
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>
+          <Wallet />
+        </WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
+  );
 }
+
+export default App;
