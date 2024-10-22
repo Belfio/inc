@@ -28,7 +28,7 @@ By decentralizing these core aspects of company formation and management, INC no
 
 ## What
 
-**Internet Native Companies (INC)** is a comprehensive suite of smart contracts and web applications built on the Solana blockchain using the Anchor framework. INC enables entrepreneurs, existing companies, and DAOs to establish and manage decentralized organizations with enhanced transparency, efficient shareholder management, and secure treasury operations. By leveraging Solana's high-performance blockchain, INC ensures scalable and reliable operations for modern, software-driven companies seeking decentralized governance and automation.
+**Internet Native Companies (INC)** is a comprehensive suite of smart contracts and web applications built on the Solana blockchain using the Anchor framework. INC enables entrepreneurs, existing companies, and DAOs to establish and manage decentralized organizations with enhanced transparency, efficient shareholder management, secure treasury operations, and the ability to send and receive a stablecoin currency called **Inccoin**. By leveraging Solana's high-performance blockchain, INC ensures scalable and reliable operations for modern, software-driven companies seeking decentralized governance and automation.
 
 ## How
 
@@ -56,11 +56,21 @@ INC achieves the creation and management of decentralized companies through a co
      - `deposit_funds` & `transfer_funds`: Manages treasury operations securely.
 
 3. **Token Program**
+
    - **Purpose:** Manages the issuance and distribution of voting and share tokens associated with each INC.
    - **Functionality:** Handles token initialization, transfers, minting, and burning, ensuring efficient shareholder and voting power management.
    - **Key Features:**
      - `initialize`: Sets up token accounts for voting and shares.
      - `transfer`, `mint`, `burn`: Manages token transactions and supply.
+
+4. **Inccoin Program**
+
+   - **Purpose:** Manages the issuance and transactions of the stablecoin **Inccoin** within the INC ecosystem.
+   - **Functionality:** Facilitates the creation, distribution, and transfer of Inccoin, ensuring stability and security in financial operations.
+   - **Key Features:**
+     - `mint_inccoin`: Allows authorized entities to mint new Inccoin tokens.
+     - `transfer_inccoin`: Enables seamless transfer of Inccoin between companies and stakeholders.
+     - `burn_inccoin`: Handles the burning of Inccoin to manage supply and stability.
 
 ### Web3 Front-End Application
 
@@ -87,7 +97,11 @@ The front-end application provides an intuitive interface for users to interact 
 
    - **Functionality:** Enables secure deposit and transfer of funds, ensuring effective and transparent treasury operations.
 
-6. **Authentication and Security**
+6. **INC Stablecoin Management**
+
+   - **Functionality:** Facilitates the minting, transferring, and burning of Inccoin, providing companies with a stable and reliable currency for their financial operations.
+
+7. **Authentication and Security**
    - **Functionality:** Integrates with Solana wallets (e.g., Phantom, Solflare) for secure user authentication and transaction signing, ensuring only authorized actions are performed.
 
 ### Technology Stack
