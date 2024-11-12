@@ -171,3 +171,17 @@ The front-end application provides an intuitive interface for users to interact 
 - **Multisig Mechanisms:** Implements multisignature requirements for critical treasury and governance operations.
 
 By integrating these components and adhering to best practices, INC provides a secure, efficient, and decentralized framework for modern organizations to operate transparently on the Solana blockchain.
+
+## Unresolved issues
+
+The main issue with the concept of Internet Native Companies (INC) lies in the tension between decentralization and real-world compliance. Although INCs streamline company creation and management on the blockchain, offering transparency, automation, and efficiency, they still face several challenges:
+
+1. **Legal Recognition and Jurisdiction:** Traditional companies need to be registered under a legal jurisdiction to be recognized by governments and courts. INCs operate permissionlessly on the blockchain, bypassing this. However, without formal recognition, these companies may not be able to enforce contracts, protect intellectual property, or manage disputes in traditional legal systems.
+
+2. **Regulatory Compliance:** While INCs aim to eliminate the complexity of navigating regulatory environments, businesses still need to comply with laws around taxes, employment, data protection, anti-money laundering (AML), and know-your-customer (KYC) requirements. Many jurisdictions have strict laws that INCs would struggle to meet without additional systems for compliance.
+
+3. **Banking and Financial Integration:** INCs use blockchain-based tokens like Inccoin for treasury operations, but real-world businesses need integration with traditional financial systems, including banks for payroll, loans, and payments. The lack of established bridges between crypto-treasury systems and fiat banking could limit broader adoption.
+
+4. **Governance and Security Risks:** The decentralized governance of INCs brings flexibility but also raises risks, such as shareholder disputes and vulnerabilities in smart contracts. Poorly designed governance mechanisms or security flaws in the smart contracts can result in exploitation or governance failure, as seen in various decentralized autonomous organizations (DAOs).
+
+5. **Stability and Adoption:** The use of Solana blockchain and stablecoins like Inccoin might present technical and market risks. Blockchain networks may face outages, forks, or regulatory crackdowns, affecting the reliability and scalability of INCs.

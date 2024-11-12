@@ -1,7 +1,20 @@
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::pubkey::Pubkey;
+use sha2::{Digest, Sha256};
 
 declare_id!("7kmLroKer2JooHLqQi8ugBRHhVVTudxUm1JsAa9gpyhK");
+
+// Function to hash the company name
+fn hash_company_name(name: &str) -> [u8; 32] {
+    let mut hasher = Sha256::new();
+    hasher.update(name.as_bytes());
+    let result = hasher.finalize();
+    let mut hash = [0u8; 32];
+    hash.copy_from_slice(&result[..32]);
+    hash
+}
+
+
 
 #[program]
 pub mod inc_factory {
@@ -9,41 +22,33 @@ pub mod inc_factory {
 
     pub fn initialize_registry(ctx: Context<InitializeRegistry>) -> Result<()> {
         let registry = &mut ctx.accounts.company_registry;
+        // Check if the registry is already initialized
+        if !registry.companies.is_empty() {
+            return Err(IncFactoryError::RegistryAlreadyExists.into());
+        }
+
         registry.companies = Vec::new();
         Ok(())
     }
 
     pub fn create_company(
         ctx: Context<CreateCompany>,
-        name: String,
+        company_name: String,
         jurisdiction: String,
         shareholders: Vec<Pubkey>,
         share_amounts: Vec<u64>,
         voters: Vec<Pubkey>,
         vote_amounts: Vec<u64>,
     ) -> Result<()> {
-        // Ensure the company name is unique
-        if ctx
-            .accounts
-            .company_registry
-            .companies
-            .iter()
-            .any(|&company| {
-                // You might need to implement a way to compare company names
-                // This is a placeholder comparison
-                company == ctx.accounts.new_company.key()
-            }) {
-            return Err(IncFactoryError::NameAlreadyTaken.into());
-        }
 
         // Validate company name
-        if name.is_empty() || name.len() > 50 {
+        if company_name.is_empty() || company_name.len() > 50 {
             return Err(IncFactoryError::InvalidName.into());
         }
 
         // Initialize the new company account
         let new_company = &mut ctx.accounts.new_company;
-        new_company.name = name;
+        new_company.company_name = company_name;
         new_company.jurisdiction = jurisdiction;
         new_company.shareholders = shareholders;
         new_company.share_amounts = share_amounts;
@@ -83,12 +88,44 @@ pub mod inc_factory {
     }
 }
 
+
 #[derive(Accounts)]
+pub struct InitializeRegistry<'info> {
+    #[account(
+        init,
+        payer = user,
+        space = 8 + 32 * 100, // Adjust space as needed
+        seeds = [b"company_registry"],
+        bump
+    )]
+    pub company_registry: Account<'info, CompanyRegistry>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+
+
+#[derive(Accounts)]
+#[instruction(company_name: String)]
 pub struct CreateCompany<'info> {
     #[account(mut)]
     pub company_registry: Account<'info, CompanyRegistry>,
-    #[account(init, payer = user, space = 8 + 32 + 50 + 50 + 32 * 50 + 8 * 50 + 32 * 50 + 8 * 50, seeds = [b"company", user.key().as_ref()], bump)]
+    
+
+    #[account(
+            // Start of Selection
+            init,
+            payer = user,
+            space = 8 + 32 + 50 + 50 + 32 * 50 + 8 * 50 + 32 * 50 + 8 * 50,
+            seeds = [
+                b"company".as_ref(),
+                &hash_company_name(&company_name),
+            ],
+            bump,
+    )]
     pub new_company: Account<'info, Company>,
+    
     #[account(mut)]
     pub user: Signer<'info>,
     pub system_program: Program<'info, System>,
@@ -105,16 +142,6 @@ pub struct GetCompanyByName<'info> {
     pub company_account: Account<'info, Company>,
 }
 
-#[derive(Accounts)]
-pub struct InitializeRegistry<'info> {
-    #[account(init, payer = user, space = 8 + 32 * 100)] // Adjust space as needed
-    pub company_registry: Account<'info, CompanyRegistry>,
-    #[account(mut)]
-    pub user: Signer<'info>,
-    pub system_program: Program<'info, System>,
-}
-
-
 #[account]
 pub struct CompanyRegistry {
     pub companies: Vec<Pubkey>,
@@ -122,7 +149,7 @@ pub struct CompanyRegistry {
 
 #[account]
 pub struct Company {
-    pub name: String,
+    pub company_name: String,
     pub jurisdiction: String,
     pub shareholders: Vec<Pubkey>,
     pub share_amounts: Vec<u64>,
@@ -138,4 +165,8 @@ pub enum IncFactoryError {
     InvalidName,
     #[msg("Company not found")]
     CompanyNotFound,
+    #[msg("Registry already exists")]
+    RegistryAlreadyExists,
 }
+
+
