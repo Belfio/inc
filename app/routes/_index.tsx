@@ -9,7 +9,8 @@ import {
   // Add other wallets if needed
 } from "@solana/wallet-adapter-wallets";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import Wallet from "~/pages/_app";
+// import Wallet from "~/pages/_app";
+import Landing from "~/pages/landing";
 import { clusterApiUrl } from "@solana/web3.js";
 
 function App() {
@@ -30,7 +31,8 @@ function App() {
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
-          <Wallet />
+          {/* <Wallet /> */}
+          <Landing />
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
