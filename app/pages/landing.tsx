@@ -28,7 +28,7 @@ export default function Landing() {
           </div>
         </div>
 
-        <h1 className="text-4xl font-normal mb-12 mt-36 ">
+        <h1 className="text-4xl font-normal mb-12 mt-32 ">
           Set up an Internet-Native Company
         </h1>
 
@@ -37,7 +37,7 @@ export default function Landing() {
           <input
             type="text"
             placeholder="Type the company name you want"
-            className="flex-1 bg-gray-100 rounded px-4 py-2 text-gray-800 placeholder-gray-400"
+            className="flex-1 bg-gray-100 rounded px-4 py-4 text-gray-800 placeholder-gray-400"
           />
           <button className="bg-[#3D4E81] px-8 py-2 rounded text-white">
             REGISTER
