@@ -4,8 +4,9 @@ export default function Landing() {
       {/* Header */}
       <header className="flex justify-between items-center px-8 py-4 bg-black text-white">
         <div className="text-lg tracking-wide">INTERNET NATIVE COMPANY</div>
-        <button className="bg-[#3D4E81] px-6 py-2 rounded text-white text-sm tracking-wide">
-          REGISTER YOUR COMPANY
+        <button className="bg-[#3D4E81] w-[240px] px-4 py-4 rounded text-white text-sm tracking-wide text-left">
+          <div className="py-4">c</div>
+          LOGIN
         </button>
       </header>
 
@@ -26,6 +27,7 @@ export default function Landing() {
             <div className="mb-1">ACTIVE</div>
           </div>
         </div>
+
         <h1 className="text-4xl font-normal mb-12 mt-36 ">
           Set up an Internet-Native Company
         </h1>

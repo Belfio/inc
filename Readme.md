@@ -1,5 +1,11 @@
 # INC - Internet Native Companies
 
+## TODO:
+
+1. Read this for voting system: https://www.ih21.org/en/guidelines
+
+## What
+
 A set of programs (smart contracts) that enable the creation of an Internet Native Company (INC). An INC is an entity registered on the blockchain. The blockchain of choice is Solana. This set of programs allows the creation and management of a company on the blockchain, with functionality for shareholder management and treasury operations.
 
 ## Simple Summary
