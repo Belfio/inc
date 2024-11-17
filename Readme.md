@@ -4,6 +4,22 @@
 
 1. Read this for voting system: https://www.ih21.org/en/guidelines
 
+## Deployment
+
+Change Anchor.toml
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+to
+[provider]
+cluster = "devnet"
+wallet = "/Users/alfredo/.config/solana/id.json"
+
+Devent
+Program Id: 7kmLroKer2JooHLqQi8ugBRHhVVTudxUm1JsAa9gpyhK
+Signature: 3YJFajrpGqfUDA9a7aamJGtcdF3DZRizbUyRUzRhLLtSK1cjZnzUxJwVDA6dBUkRCX45jQ2EyyQY7WcHiX89sfqa
+
 ## What
 
 A set of programs (smart contracts) that enable the creation of an Internet Native Company (INC). An INC is an entity registered on the blockchain. The blockchain of choice is Solana. This set of programs allows the creation and management of a company on the blockchain, with functionality for shareholder management and treasury operations.

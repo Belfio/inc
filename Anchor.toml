@@ -8,12 +8,15 @@ skip-lint = false
 inc = "H1cFWB88pJvr443ak2gx1BpFVr2GcAZid38tEc5xUfk7"
 inc-factory="7kmLroKer2JooHLqQi8ugBRHhVVTudxUm1JsAa9gpyhK"
 
+[programs.devnet]
+inc-factory="7kmLroKer2JooHLqQi8ugBRHhVVTudxUm1JsAa9gpyhK"
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
-wallet = "~/.config/solana/id.json"
+cluster = "devnet"
+wallet = "/Users/alfredo/.config/solana/id.json"
+
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
