@@ -1,0 +1,320 @@
+{
+  "address": "AygfummZBxjDZoE3FhoWfyG2mvBE3jZS1FM2sNttDvvv",
+  "metadata": {
+    "name": "company_registry",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "get_companies_paginated",
+      "discriminator": [
+        2,
+        97,
+        144,
+        199,
+        46,
+        130,
+        75,
+        68
+      ],
+      "accounts": [
+        {
+          "name": "company_registry"
+        }
+      ],
+      "args": [
+        {
+          "name": "start_index",
+          "type": "u64"
+        },
+        {
+          "name": "limit",
+          "type": "u64"
+        }
+      ],
+      "returns": {
+        "vec": "pubkey"
+      }
+    },
+    {
+      "name": "get_company_by_name",
+      "discriminator": [
+        197,
+        60,
+        118,
+        177,
+        172,
+        48,
+        68,
+        194
+      ],
+      "accounts": [
+        {
+          "name": "company_registry"
+        }
+      ],
+      "args": [
+        {
+          "name": "company_name",
+          "type": "string"
+        },
+        {
+          "name": "company_program",
+          "type": "pubkey"
+        }
+      ],
+      "returns": {
+        "option": "pubkey"
+      }
+    },
+    {
+      "name": "get_company_count",
+      "discriminator": [
+        100,
+        101,
+        130,
+        216,
+        88,
+        188,
+        216,
+        182
+      ],
+      "accounts": [
+        {
+          "name": "company_registry"
+        }
+      ],
+      "args": [],
+      "returns": "u64"
+    },
+    {
+      "name": "get_company_list",
+      "discriminator": [
+        51,
+        248,
+        58,
+        75,
+        239,
+        203,
+        29,
+        217
+      ],
+      "accounts": [
+        {
+          "name": "company_registry"
+        }
+      ],
+      "args": [],
+      "returns": {
+        "vec": "pubkey"
+      }
+    },
+    {
+      "name": "initialize_registry",
+      "discriminator": [
+        189,
+        181,
+        20,
+        17,
+        174,
+        57,
+        249,
+        59
+      ],
+      "accounts": [
+        {
+          "name": "company_registry",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  112,
+                  97,
+                  110,
+                  121,
+                  95,
+                  114,
+                  101,
+                  103,
+                  105,
+                  115,
+                  116,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "is_company_registered",
+      "discriminator": [
+        37,
+        229,
+        38,
+        224,
+        88,
+        45,
+        250,
+        178
+      ],
+      "accounts": [
+        {
+          "name": "company_registry"
+        }
+      ],
+      "args": [
+        {
+          "name": "company",
+          "type": "pubkey"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "register_company",
+      "discriminator": [
+        109,
+        51,
+        247,
+        199,
+        229,
+        252,
+        157,
+        222
+      ],
+      "accounts": [
+        {
+          "name": "company_registry",
+          "writable": true
+        },
+        {
+          "name": "company_account"
+        },
+        {
+          "name": "company_program"
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "company_name",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "remove_company",
+      "discriminator": [
+        156,
+        80,
+        65,
+        128,
+        203,
+        39,
+        84,
+        139
+      ],
+      "accounts": [
+        {
+          "name": "company_registry",
+          "writable": true
+        },
+        {
+          "name": "company_account"
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "CompanyRegistry",
+      "discriminator": [
+        27,
+        30,
+        241,
+        213,
+        171,
+        175,
+        54,
+        176
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidName",
+      "msg": "Invalid company name"
+    },
+    {
+      "code": 6001,
+      "name": "CompanyNotFound",
+      "msg": "Company not found"
+    },
+    {
+      "code": 6002,
+      "name": "RegistryAlreadyExists",
+      "msg": "Registry already exists"
+    },
+    {
+      "code": 6003,
+      "name": "ExceedsMaximumCompanies",
+      "msg": "Exceeds maximum companies limit"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidCompanyAddress",
+      "msg": "Invalid company account address"
+    }
+  ],
+  "types": [
+    {
+      "name": "CompanyRegistry",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "companies",
+            "type": {
+              "vec": "pubkey"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

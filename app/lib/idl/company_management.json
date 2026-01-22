@@ -1,0 +1,1274 @@
+{
+  "address": "H1cFWB88pJvr443ak2gx1BpFVr2GcAZid38tEc5xUfk7",
+  "metadata": {
+    "name": "company_management",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "accept_authority",
+      "discriminator": [
+        107,
+        86,
+        198,
+        91,
+        33,
+        12,
+        107,
+        160
+      ],
+      "accounts": [
+        {
+          "name": "company",
+          "writable": true
+        },
+        {
+          "name": "new_authority",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "add_shareholder",
+      "discriminator": [
+        245,
+        200,
+        91,
+        102,
+        184,
+        107,
+        29,
+        188
+      ],
+      "accounts": [
+        {
+          "name": "company",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "shareholder",
+          "type": "pubkey"
+        },
+        {
+          "name": "share_amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "add_voter",
+      "discriminator": [
+        171,
+        104,
+        244,
+        58,
+        192,
+        30,
+        92,
+        140
+      ],
+      "accounts": [
+        {
+          "name": "company",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "voter",
+          "type": "pubkey"
+        },
+        {
+          "name": "voting_power",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "cancel_authority_transfer",
+      "discriminator": [
+        94,
+        131,
+        125,
+        184,
+        183,
+        24,
+        125,
+        229
+      ],
+      "accounts": [
+        {
+          "name": "company",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cancel_proposal",
+      "discriminator": [
+        106,
+        74,
+        128,
+        146,
+        19,
+        65,
+        39,
+        23
+      ],
+      "accounts": [
+        {
+          "name": "company"
+        },
+        {
+          "name": "proposal",
+          "writable": true
+        },
+        {
+          "name": "canceller",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cast_vote",
+      "discriminator": [
+        20,
+        212,
+        15,
+        189,
+        69,
+        180,
+        69,
+        151
+      ],
+      "accounts": [
+        {
+          "name": "company"
+        },
+        {
+          "name": "proposal",
+          "writable": true
+        },
+        {
+          "name": "voter",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "vote_for",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "create_proposal",
+      "discriminator": [
+        132,
+        116,
+        68,
+        174,
+        216,
+        160,
+        198,
+        22
+      ],
+      "accounts": [
+        {
+          "name": "company"
+        },
+        {
+          "name": "proposal",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  112,
+                  111,
+                  115,
+                  97,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "company"
+              },
+              {
+                "kind": "arg",
+                "path": "proposal_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "proposer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "proposal_id",
+          "type": "u64"
+        },
+        {
+          "name": "proposal_type",
+          "type": {
+            "defined": {
+              "name": "ProposalType"
+            }
+          }
+        },
+        {
+          "name": "description",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "deposit_funds",
+      "discriminator": [
+        202,
+        39,
+        52,
+        211,
+        53,
+        20,
+        250,
+        88
+      ],
+      "accounts": [
+        {
+          "name": "company"
+        },
+        {
+          "name": "treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "company"
+              }
+            ]
+          }
+        },
+        {
+          "name": "depositor",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "execute_proposal",
+      "discriminator": [
+        186,
+        60,
+        116,
+        133,
+        108,
+        128,
+        111,
+        28
+      ],
+      "accounts": [
+        {
+          "name": "company",
+          "writable": true
+        },
+        {
+          "name": "proposal",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "execute_treasury_withdrawal",
+      "discriminator": [
+        34,
+        237,
+        191,
+        140,
+        45,
+        195,
+        3,
+        104
+      ],
+      "accounts": [
+        {
+          "name": "company"
+        },
+        {
+          "name": "treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "company"
+              }
+            ]
+          }
+        },
+        {
+          "name": "proposal",
+          "writable": true
+        },
+        {
+          "name": "recipient",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "finalize_proposal",
+      "discriminator": [
+        23,
+        68,
+        51,
+        167,
+        109,
+        173,
+        187,
+        164
+      ],
+      "accounts": [
+        {
+          "name": "company"
+        },
+        {
+          "name": "proposal",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "get_treasury_balance",
+      "discriminator": [
+        249,
+        168,
+        79,
+        223,
+        203,
+        75,
+        119,
+        177
+      ],
+      "accounts": [
+        {
+          "name": "company"
+        },
+        {
+          "name": "treasury",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "company"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [],
+      "returns": "u64"
+    },
+    {
+      "name": "initialize_company",
+      "discriminator": [
+        75,
+        156,
+        55,
+        94,
+        184,
+        64,
+        58,
+        30
+      ],
+      "accounts": [
+        {
+          "name": "company",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  112,
+                  97,
+                  110,
+                  121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "company_name_hash"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "company"
+              }
+            ]
+          }
+        },
+        {
+          "name": "registry_program",
+          "address": "AygfummZBxjDZoE3FhoWfyG2mvBE3jZS1FM2sNttDvvv"
+        },
+        {
+          "name": "company_program"
+        },
+        {
+          "name": "company_registry",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "company_name",
+          "type": "string"
+        },
+        {
+          "name": "jurisdiction",
+          "type": "string"
+        },
+        {
+          "name": "company_name_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "remove_shareholder",
+      "discriminator": [
+        66,
+        175,
+        86,
+        173,
+        126,
+        193,
+        86,
+        239
+      ],
+      "accounts": [
+        {
+          "name": "company",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "shareholder",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "remove_voter",
+      "discriminator": [
+        252,
+        24,
+        38,
+        3,
+        72,
+        66,
+        197,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "company",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "voter",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "transfer_authority",
+      "discriminator": [
+        48,
+        169,
+        76,
+        72,
+        229,
+        180,
+        55,
+        161
+      ],
+      "accounts": [
+        {
+          "name": "company",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "new_authority",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "update_company_name",
+      "discriminator": [
+        163,
+        151,
+        9,
+        118,
+        219,
+        223,
+        99,
+        110
+      ],
+      "accounts": [
+        {
+          "name": "company",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "new_name",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "update_jurisdiction",
+      "discriminator": [
+        172,
+        83,
+        224,
+        77,
+        240,
+        153,
+        228,
+        24
+      ],
+      "accounts": [
+        {
+          "name": "company",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "new_jurisdiction",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "withdraw_funds",
+      "discriminator": [
+        241,
+        36,
+        29,
+        111,
+        208,
+        31,
+        104,
+        217
+      ],
+      "accounts": [
+        {
+          "name": "company"
+        },
+        {
+          "name": "treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "company"
+              }
+            ]
+          }
+        },
+        {
+          "name": "recipient",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Company",
+      "discriminator": [
+        32,
+        212,
+        52,
+        137,
+        90,
+        7,
+        206,
+        183
+      ]
+    },
+    {
+      "name": "Proposal",
+      "discriminator": [
+        26,
+        94,
+        189,
+        187,
+        116,
+        136,
+        53,
+        33
+      ]
+    },
+    {
+      "name": "Treasury",
+      "discriminator": [
+        238,
+        239,
+        123,
+        238,
+        89,
+        1,
+        168,
+        253
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidName",
+      "msg": "Invalid company name"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidJurisdiction",
+      "msg": "Invalid jurisdiction"
+    },
+    {
+      "code": 6002,
+      "name": "MaxShareholdersReached",
+      "msg": "Maximum number of shareholders reached"
+    },
+    {
+      "code": 6003,
+      "name": "MaxVotersReached",
+      "msg": "Maximum number of voters reached"
+    },
+    {
+      "code": 6004,
+      "name": "Unauthorized",
+      "msg": "Unauthorized operation"
+    },
+    {
+      "code": 6005,
+      "name": "TreasuryOverflow",
+      "msg": "Treasury overflow"
+    },
+    {
+      "code": 6006,
+      "name": "TreasuryUnderflow",
+      "msg": "Treasury underflow"
+    },
+    {
+      "code": 6007,
+      "name": "InsufficientFunds",
+      "msg": "Insufficient funds in treasury"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidTreasury",
+      "msg": "Invalid treasury account"
+    },
+    {
+      "code": 6009,
+      "name": "InvalidPendingAuthority",
+      "msg": "Invalid pending authority"
+    },
+    {
+      "code": 6010,
+      "name": "ProposalExpired",
+      "msg": "Proposal has expired"
+    },
+    {
+      "code": 6011,
+      "name": "ProposalNotActive",
+      "msg": "Proposal is not active"
+    },
+    {
+      "code": 6012,
+      "name": "AlreadyVoted",
+      "msg": "Already voted on this proposal"
+    },
+    {
+      "code": 6013,
+      "name": "NotAVoter",
+      "msg": "Not a voter"
+    },
+    {
+      "code": 6014,
+      "name": "VotingNotEnded",
+      "msg": "Proposal voting period has not ended"
+    },
+    {
+      "code": 6015,
+      "name": "ProposalNotPassed",
+      "msg": "Proposal did not pass"
+    },
+    {
+      "code": 6016,
+      "name": "ProposalAlreadyExecuted",
+      "msg": "Proposal already executed"
+    },
+    {
+      "code": 6017,
+      "name": "InvalidProposalType",
+      "msg": "Invalid proposal type"
+    }
+  ],
+  "types": [
+    {
+      "name": "Company",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "company_name",
+            "type": "string"
+          },
+          {
+            "name": "jurisdiction",
+            "type": "string"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "pending_authority",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "shareholders",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "Shareholder"
+                }
+              }
+            }
+          },
+          {
+            "name": "voters",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "Voter"
+                }
+              }
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Proposal",
+      "docs": [
+        "Proposal account that holds all data for a governance proposal"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "docs": [
+              "Unique identifier for this proposal"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "company",
+            "docs": [
+              "The company this proposal belongs to"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "proposer",
+            "docs": [
+              "The address that created this proposal"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "proposal_type",
+            "docs": [
+              "The type and data of the proposal"
+            ],
+            "type": {
+              "defined": {
+                "name": "ProposalType"
+              }
+            }
+          },
+          {
+            "name": "description",
+            "docs": [
+              "Description of the proposal"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "votes_for",
+            "docs": [
+              "Total voting power that voted FOR"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "votes_against",
+            "docs": [
+              "Total voting power that voted AGAINST"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "voters_voted",
+            "docs": [
+              "List of voters who have voted on this proposal"
+            ],
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "VoteRecord"
+                }
+              }
+            }
+          },
+          {
+            "name": "status",
+            "docs": [
+              "Current status of the proposal"
+            ],
+            "type": {
+              "defined": {
+                "name": "ProposalStatus"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "docs": [
+              "Unix timestamp when the proposal was created"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "expires_at",
+            "docs": [
+              "Unix timestamp when voting ends"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProposalStatus",
+      "docs": [
+        "The status of a proposal"
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Active"
+          },
+          {
+            "name": "Passed"
+          },
+          {
+            "name": "Rejected"
+          },
+          {
+            "name": "Executed"
+          },
+          {
+            "name": "Cancelled"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProposalType",
+      "docs": [
+        "The type of proposal being created"
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "TreasuryWithdrawal",
+            "fields": [
+              {
+                "name": "recipient",
+                "type": "pubkey"
+              },
+              {
+                "name": "amount",
+                "type": "u64"
+              }
+            ]
+          },
+          {
+            "name": "AddShareholder",
+            "fields": [
+              {
+                "name": "shareholder",
+                "type": "pubkey"
+              },
+              {
+                "name": "shares",
+                "type": "u64"
+              }
+            ]
+          },
+          {
+            "name": "RemoveShareholder",
+            "fields": [
+              {
+                "name": "shareholder",
+                "type": "pubkey"
+              }
+            ]
+          },
+          {
+            "name": "AddVoter",
+            "fields": [
+              {
+                "name": "voter",
+                "type": "pubkey"
+              },
+              {
+                "name": "voting_power",
+                "type": "u64"
+              }
+            ]
+          },
+          {
+            "name": "RemoveVoter",
+            "fields": [
+              {
+                "name": "voter",
+                "type": "pubkey"
+              }
+            ]
+          },
+          {
+            "name": "UpdateCompanyName",
+            "fields": [
+              {
+                "name": "new_name",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "UpdateJurisdiction",
+            "fields": [
+              {
+                "name": "new_jurisdiction",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "TransferAuthority",
+            "fields": [
+              {
+                "name": "new_authority",
+                "type": "pubkey"
+              }
+            ]
+          },
+          {
+            "name": "Generic"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Shareholder",
+      "docs": [
+        "Represents a shareholder with their share amount"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "address",
+            "type": "pubkey"
+          },
+          {
+            "name": "shares",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Treasury",
+      "docs": [
+        "Treasury PDA that holds actual SOL for the company"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "company",
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VoteRecord",
+      "docs": [
+        "A voter's vote record"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "voter",
+            "type": "pubkey"
+          },
+          {
+            "name": "vote_for",
+            "type": "bool"
+          },
+          {
+            "name": "voting_power",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Voter",
+      "docs": [
+        "Represents a voter with their voting power"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "address",
+            "type": "pubkey"
+          },
+          {
+            "name": "voting_power",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,638 @@
+{
+  "address": "8Vc5phYTpDDt92QKabTfNiQ2CaEcTKKMtGTovGkREdTP",
+  "metadata": {
+    "name": "inc_token",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "INC Token Program for company shares and voting tokens"
+  },
+  "instructions": [
+    {
+      "name": "burn_shares",
+      "docs": [
+        "Burn share tokens from a holder's account"
+      ],
+      "discriminator": [
+        98,
+        168,
+        88,
+        31,
+        217,
+        221,
+        191,
+        214
+      ],
+      "accounts": [
+        {
+          "name": "token_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_config.company",
+                "account": "CompanyTokenConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "share_token_mint",
+          "writable": true
+        },
+        {
+          "name": "holder_token_account",
+          "writable": true
+        },
+        {
+          "name": "holder",
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "burn_voting_tokens",
+      "docs": [
+        "Burn voting tokens from a holder's account"
+      ],
+      "discriminator": [
+        96,
+        135,
+        60,
+        122,
+        152,
+        237,
+        66,
+        232
+      ],
+      "accounts": [
+        {
+          "name": "token_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_config.company",
+                "account": "CompanyTokenConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "voting_token_mint",
+          "writable": true
+        },
+        {
+          "name": "holder_token_account",
+          "writable": true
+        },
+        {
+          "name": "holder",
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initialize_token_config",
+      "docs": [
+        "Initialize token configuration for a company",
+        "Creates SPL token mints for share tokens and voting tokens"
+      ],
+      "discriminator": [
+        60,
+        14,
+        114,
+        86,
+        25,
+        84,
+        93,
+        149
+      ],
+      "accounts": [
+        {
+          "name": "company"
+        },
+        {
+          "name": "token_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "company"
+              }
+            ]
+          }
+        },
+        {
+          "name": "share_token_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  104,
+                  97,
+                  114,
+                  101,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "company"
+              }
+            ]
+          }
+        },
+        {
+          "name": "voting_token_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  111,
+                  116,
+                  105,
+                  110,
+                  103,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "company"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "_share_token_decimals",
+          "type": "u8"
+        },
+        {
+          "name": "_voting_token_decimals",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "mint_shares",
+      "docs": [
+        "Mint share tokens to a recipient"
+      ],
+      "discriminator": [
+        24,
+        196,
+        132,
+        0,
+        183,
+        158,
+        216,
+        142
+      ],
+      "accounts": [
+        {
+          "name": "token_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_config.company",
+                "account": "CompanyTokenConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "share_token_mint",
+          "writable": true
+        },
+        {
+          "name": "recipient_token_account",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "mint_voting_tokens",
+      "docs": [
+        "Mint voting tokens to a recipient"
+      ],
+      "discriminator": [
+        89,
+        191,
+        196,
+        119,
+        214,
+        116,
+        4,
+        241
+      ],
+      "accounts": [
+        {
+          "name": "token_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_config.company",
+                "account": "CompanyTokenConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "voting_token_mint",
+          "writable": true
+        },
+        {
+          "name": "recipient_token_account",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "transfer_shares",
+      "docs": [
+        "Transfer share tokens between accounts"
+      ],
+      "discriminator": [
+        23,
+        136,
+        140,
+        15,
+        181,
+        54,
+        120,
+        175
+      ],
+      "accounts": [
+        {
+          "name": "token_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_config.company",
+                "account": "CompanyTokenConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "from_token_account",
+          "writable": true
+        },
+        {
+          "name": "to_token_account",
+          "writable": true
+        },
+        {
+          "name": "from_authority",
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "transfer_voting_tokens",
+      "docs": [
+        "Transfer voting tokens between accounts"
+      ],
+      "discriminator": [
+        145,
+        68,
+        118,
+        86,
+        175,
+        207,
+        188,
+        173
+      ],
+      "accounts": [
+        {
+          "name": "token_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_config.company",
+                "account": "CompanyTokenConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "from_token_account",
+          "writable": true
+        },
+        {
+          "name": "to_token_account",
+          "writable": true
+        },
+        {
+          "name": "from_authority",
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "CompanyTokenConfig",
+      "discriminator": [
+        70,
+        203,
+        37,
+        77,
+        13,
+        171,
+        69,
+        186
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "Unauthorized",
+      "msg": "Unauthorized"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidMint",
+      "msg": "Invalid mint"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidTokenAccount",
+      "msg": "Invalid token account"
+    }
+  ],
+  "types": [
+    {
+      "name": "CompanyTokenConfig",
+      "docs": [
+        "Configuration for a company's SPL tokens"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "company",
+            "docs": [
+              "The company this token config belongs to"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "share_token_mint",
+            "docs": [
+              "The SPL token mint for share tokens"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "voting_token_mint",
+            "docs": [
+              "The SPL token mint for voting tokens"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "docs": [
+              "The authority that can mint/burn tokens"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+}

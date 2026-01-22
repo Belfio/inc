@@ -1,0 +1,736 @@
+{
+  "address": "Cbhb1XRLFxVc69yngp1iXJQmDVVTQPhzrXnCo939T9pL",
+  "metadata": {
+    "name": "inccoin",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Inccoin - INC Stablecoin Program"
+  },
+  "instructions": [
+    {
+      "name": "add_authorized_minter",
+      "docs": [
+        "Add an authorized minter who can mint Inccoins"
+      ],
+      "discriminator": [
+        116,
+        97,
+        132,
+        70,
+        157,
+        178,
+        120,
+        15
+      ],
+      "accounts": [
+        {
+          "name": "inccoin_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  105,
+                  110,
+                  99,
+                  99,
+                  111,
+                  105,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authorized_minter",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  105,
+                  110,
+                  116,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "minter"
+              }
+            ]
+          }
+        },
+        {
+          "name": "minter"
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "mint_limit",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "burn_inccoin",
+      "docs": [
+        "Burn Inccoins"
+      ],
+      "discriminator": [
+        200,
+        193,
+        137,
+        14,
+        132,
+        59,
+        218,
+        165
+      ],
+      "accounts": [
+        {
+          "name": "inccoin_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  105,
+                  110,
+                  99,
+                  99,
+                  111,
+                  105,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "inccoin_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  105,
+                  110,
+                  99,
+                  99,
+                  111,
+                  105,
+                  110,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "holder_token_account",
+          "writable": true
+        },
+        {
+          "name": "holder",
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initialize_inccoin",
+      "docs": [
+        "Initialize the Inccoin stablecoin"
+      ],
+      "discriminator": [
+        130,
+        164,
+        154,
+        175,
+        171,
+        85,
+        92,
+        80
+      ],
+      "accounts": [
+        {
+          "name": "inccoin_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  105,
+                  110,
+                  99,
+                  99,
+                  111,
+                  105,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "inccoin_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  105,
+                  110,
+                  99,
+                  99,
+                  111,
+                  105,
+                  110,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "mint_inccoin",
+      "docs": [
+        "Mint Inccoins (only authorized minters)"
+      ],
+      "discriminator": [
+        107,
+        19,
+        239,
+        144,
+        191,
+        214,
+        235,
+        157
+      ],
+      "accounts": [
+        {
+          "name": "inccoin_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  105,
+                  110,
+                  99,
+                  99,
+                  111,
+                  105,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "inccoin_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  105,
+                  110,
+                  99,
+                  99,
+                  111,
+                  105,
+                  110,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authorized_minter",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  105,
+                  110,
+                  116,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "minter"
+              }
+            ]
+          }
+        },
+        {
+          "name": "recipient_token_account",
+          "writable": true
+        },
+        {
+          "name": "minter",
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "remove_authorized_minter",
+      "docs": [
+        "Remove an authorized minter"
+      ],
+      "discriminator": [
+        195,
+        53,
+        227,
+        150,
+        86,
+        236,
+        12,
+        15
+      ],
+      "accounts": [
+        {
+          "name": "inccoin_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  105,
+                  110,
+                  99,
+                  99,
+                  111,
+                  105,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authorized_minter",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  105,
+                  110,
+                  116,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authorized_minter.minter",
+                "account": "AuthorizedMinter"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "transfer_inccoin",
+      "docs": [
+        "Transfer Inccoins between accounts"
+      ],
+      "discriminator": [
+        12,
+        5,
+        85,
+        30,
+        47,
+        37,
+        227,
+        147
+      ],
+      "accounts": [
+        {
+          "name": "inccoin_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  105,
+                  110,
+                  99,
+                  99,
+                  111,
+                  105,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "from_token_account",
+          "writable": true
+        },
+        {
+          "name": "to_token_account",
+          "writable": true
+        },
+        {
+          "name": "from_authority",
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "update_mint_limit",
+      "docs": [
+        "Update mint limit for an authorized minter (admin only)"
+      ],
+      "discriminator": [
+        179,
+        103,
+        247,
+        14,
+        80,
+        175,
+        163,
+        27
+      ],
+      "accounts": [
+        {
+          "name": "inccoin_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  105,
+                  110,
+                  99,
+                  99,
+                  111,
+                  105,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authorized_minter",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  105,
+                  110,
+                  116,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authorized_minter.minter",
+                "account": "AuthorizedMinter"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "new_limit",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "AuthorizedMinter",
+      "discriminator": [
+        57,
+        83,
+        252,
+        191,
+        231,
+        109,
+        85,
+        13
+      ]
+    },
+    {
+      "name": "InccoinConfig",
+      "discriminator": [
+        64,
+        148,
+        89,
+        223,
+        99,
+        140,
+        141,
+        126
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "Unauthorized",
+      "msg": "Unauthorized"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidMint",
+      "msg": "Invalid mint"
+    },
+    {
+      "code": 6002,
+      "name": "MintLimitExceeded",
+      "msg": "Mint limit exceeded"
+    },
+    {
+      "code": 6003,
+      "name": "MintOverflow",
+      "msg": "Mint overflow"
+    },
+    {
+      "code": 6004,
+      "name": "BurnUnderflow",
+      "msg": "Burn underflow"
+    }
+  ],
+  "types": [
+    {
+      "name": "AuthorizedMinter",
+      "docs": [
+        "An authorized minter account"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "minter",
+            "docs": [
+              "The minter's public key"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "mint_limit",
+            "docs": [
+              "Maximum amount this minter can mint"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "minted_amount",
+            "docs": [
+              "Amount already minted by this minter"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "InccoinConfig",
+      "docs": [
+        "Global configuration for Inccoin"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "mint",
+            "docs": [
+              "The SPL token mint for Inccoin"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "mint_authority",
+            "docs": [
+              "The authority that can add/remove minters"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "total_supply",
+            "docs": [
+              "Total supply of Inccoins"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+}
